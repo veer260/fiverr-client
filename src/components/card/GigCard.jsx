@@ -40,9 +40,13 @@ const GigCard = ({ item }) => {
 
   return (
     <Link to={`/gigs/${_id}`}>
-      <div className="max-w-[300px] border-2">
+      <div className="max-w-[300px]  my-12 border-2">
         <div>
-          <img className="" src={cover} alt="" />
+          <img
+            className="w-[300px] h-[300px] object-cover"
+            src={cover}
+            alt=""
+          />
         </div>
         <div className="flex gap-x-3 p-2">
           <img

@@ -100,7 +100,7 @@ const Navbar = () => {
                   {currentUser.isSeller && (
                     <>
                       <Link
-                        to="/gigs"
+                        to="/myGigs"
                         // onClick={setOpen(false)}
                         className=" text-gray-500 font-semibold cursor-pointer"
                       >

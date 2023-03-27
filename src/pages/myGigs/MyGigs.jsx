@@ -1,8 +1,20 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import { Link } from "react-router-dom";
+import newRequest from "../../utils/newRequest";
 import GigRow from "../gig/GigRow";
 
 const MyGigs = () => {
+  const queryClient = useQueryClient();
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+  const fetchMyGigs = async () => {
+    const resposne = await newRequest.get(`/gigs/?userId=${currentUser._id}`);
+    console.log("myGigs:", resposne);
+    return resposne.data;
+  };
+  const { isLoading, data: myGigs, error } = useQuery(["myGigs"], fetchMyGigs);
+
   return (
     <div className="py-8 max-w-6xl mx-auto ">
       <div className="flex justify-between">
@@ -17,11 +29,13 @@ const MyGigs = () => {
         </span>
       </div>
       <div className="flex flex-col gap-y-4 mt-8">
-        <GigRow extraStyle="font-semibold text-xl" />
-        <GigRow />
-        <GigRow />
-        <GigRow />
-        <GigRow />
+        {isLoading
+          ? "loading..."
+          : error
+          ? "Something went wrong"
+          : myGigs.map((myGig) => {
+              return <GigRow myGig={myGig} />;
+            })}
       </div>
     </div>
   );

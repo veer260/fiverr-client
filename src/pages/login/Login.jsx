@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useField, Formik, Form } from "formik";
 import * as Yup from "yup";
 import Input from "../../components/input/Input";
@@ -6,6 +6,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Login = () => {
+  const [loginError, setLoginError] = useState();
   const navigate = useNavigate();
   const schema = Yup.object().shape({
     email: Yup.string().email("").required(),
@@ -17,7 +18,7 @@ const Login = () => {
     password: "",
   };
 
-  const callLoginApi = async (values) => {
+  const callLoginApi = async (values, bag) => {
     await axios
       .post(
         "http://localhost:8800/api/auth/login",
@@ -32,7 +33,14 @@ const Login = () => {
       .then((res) => {
         console.log(res.data);
         localStorage.setItem("currentUser", JSON.stringify(res.data));
+        setLoginError("");
         navigate("/");
+      })
+      .catch((error) => {
+        setLoginError(error.response.data);
+        setTimeout(() => {
+          setLoginError("");
+        }, 3000);
       });
   };
   return (
@@ -49,7 +57,7 @@ const Login = () => {
           validationSchema={schema}
           validateOnMount={true}
         >
-          <Form className="flex flex-col space-y-4 " action="">
+          <Form className="flex flex-col space-y-4 max-w-[300px]" action="">
             <Input
               label="email address"
               placeholder="Email address"
@@ -68,12 +76,18 @@ const Login = () => {
             <div className="flex justify-between">
               <p className="">Don't have an account</p>
               <Link
-                className="italic underline text-emerald-500 font-bergato"
+                className="italic underline text-emerald-500 font-formal font-semibold"
                 to="/register"
               >
                 Sign Up
               </Link>
             </div>
+
+            {setLoginError && (
+              <div>
+                <p className="text-red-500 font-bergato ">{loginError}</p>
+              </div>
+            )}
             <button
               className="bg-teal-500 text-white font-formal font-semibold  rounded-md p-2"
               type="submit"

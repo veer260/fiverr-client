@@ -9,6 +9,7 @@ const Gigs = () => {
   // const data = useLocation();
   // console.log("data:", data);
   const { search } = useLocation();
+  console.log(search);
   const [open, setOpen] = useState(false);
   const [sort, setSort] = useState("sales");
   const minRef = useRef();
