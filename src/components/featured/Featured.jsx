@@ -24,7 +24,7 @@ const Featured = () => {
             </span>
 
             <input
-              className="border-2 outline-none caret-teal-500 text-gray-700 placeholder:text-gray-400"
+              className="border-none outline-none caret-teal-500 text-gray-700 placeholder:text-gray-400"
               type="text"
               placeholder='Try "building mobile app"'
               value={search}
